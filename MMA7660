@@ -1,0 +1,23 @@
+#include "mbed.h" 
+#include "MMA7660.h" // Accelerometer library
+
+MMA7660 MMA(p28, p27); // Accelerometer connections 
+BufferedSerial pc(USBTX, USBRX); // tx, rx for PuTTy
+
+float ax, ay, az; // acceleration values 
+DigitalOut connectionLed(LED1);
+
+int main() { 
+ if (MMA.testConnection()) 
+ connectionLed = 1; // check that MMA is connected and display on LED1
+  
+while(1) { 
+ ax=MMA.x(); // read accelerometer values 
+ ay=MMA.y(); 
+ az=MMA.z(); 
+ wait_us(500000);
+
+ pc.printf("values are %f,%f,%f\n",ax,ay,az); 
+ pc.printf("\n"); 
+ } 
+} 
